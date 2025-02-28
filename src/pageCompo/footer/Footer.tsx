@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'
-import logo from "@/assets/logo.png"
+import logo from "../../assets/Logo.png"
 import Image from 'next/image'
 const Footer = () => {
   return (
