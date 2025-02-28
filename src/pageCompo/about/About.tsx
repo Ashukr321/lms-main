@@ -8,7 +8,7 @@ import { FaLinkedin, FaGithub } from 'react-icons/fa'
 import teamMembers from '@/data/team'
 const About = () => {
   return (
-    <div className="min-h-screen py-10 md:py-20  bg-background" id='about'>
+    <div className="min-h-screen py-10 md:py-20 bg-background" id='about'>
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16">
         <motion.div 
@@ -100,7 +100,7 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="bg-muted/30 py-20" id='team'>
+      <section className="bg-muted/30 py-20 " id='team'>
         <div className="container mx-auto px-4">
           <motion.h2 
             initial={{ opacity: 0, y: -20 }}
