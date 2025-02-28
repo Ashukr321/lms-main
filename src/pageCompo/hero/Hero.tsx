@@ -1,11 +1,14 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { FaLinkedin, FaGithub, FaTwitter, FaPlay } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import VideoModal from '@/components/VideoModal'
 
 const Hero = () => {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
+
   return (
     <section className="relative overflow-hidden py-24 sm:py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -26,16 +29,17 @@ const Hero = () => {
             
             <div className="flex flex-wrap gap-4">
               <Link href="https://lms-student-dashbord.vercel.app/">
-                <button className="px-8 py-3 bg-gradient-to-r  cursor-pointer from-primary to-blue-600 text-white rounded-lg hover:opacity-90 transition-all">
+                <button className="px-8 py-3 bg-gradient-to-r cursor-pointer from-primary to-blue-600 text-white rounded-lg hover:opacity-90 transition-all">
                   Start Learning
                 </button>
               </Link>
-              <Link href="#demo">
-                <button className="px-8 py-3 border border-primary dark:border-primary rounded-lg hover:bg-primary/10 transition-all flex items-center gap-2">
-                  <FaPlay size={16} />
-                  Watch Demo
-                </button>
-              </Link>
+              <button 
+                onClick={() => setIsVideoModalOpen(true)}
+                className="px-8 py-3 border border-primary dark:border-primary rounded-lg hover:bg-primary/10 transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <FaPlay size={16} />
+                Watch Demo
+              </button>
             </div>
 
             <div className="flex items-center gap-6 pt-4">
@@ -118,6 +122,13 @@ const Hero = () => {
         <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"></div>
       </div>
+
+      {/* Video Modal */}
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videoUrl="https://cdn.pixabay.com/video/2024/06/06/215475_tiny.mp4"
+      />
     </section>
   )
 }
