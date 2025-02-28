@@ -6,7 +6,7 @@ import { Moon, Sun, Menu } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
-import logo from "@/assets/logo.png"
+import logo from "../../assets/Logo.png"
 import Image from 'next/image'
 import {
   DropdownMenu,
