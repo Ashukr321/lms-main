@@ -1,0 +1,30 @@
+/* Carousel Styling */
+.carousel-container :global(.slick-slide) {
+  padding: 0 10px;
+}
+
+.carousel-container :global(.slick-list) {
+  margin: 0 -10px;
+}
+
+.carousel-container :global(.slick-dots) {
+  bottom: -40px;
+}
+
+.carousel-container :global(.slick-dots li button:before) {
+  color: var(--primary);
+}
+
+.carousel-container :global(.slick-dots li.slick-active button:before) {
+  color: var(--primary);
+}
+
+@media (max-width: 1024px) {
+  .carousel-container :global(.slick-prev) {
+    left: -20px;
+  }
+
+  .carousel-container :global(.slick-next) {
+    right: -20px;
+  }
+} 

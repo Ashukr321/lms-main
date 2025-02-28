@@ -14,7 +14,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-12 h-12 md:w-16 md:h-16 relative">
+              <div className="w-10 h-10 md:w-12 md:h-12 relative">
                 <Image 
                   src={logo} 
                   alt="logo" 
