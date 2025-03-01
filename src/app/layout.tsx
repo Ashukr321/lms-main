@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: "EduOrbit LMS - Modern Learning Management System",
   description: " EduOrbit is a comprehensive learning management system for students and instructors. Access courses, track progress, and engage in interactive learning.",
   keywords: " EduOrbit LMS, learning management system, online courses, education platform, e-learning",
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: " EduOrbit LMS - Modern Learning Management System",
     description: "Comprehensive learning management system for students and instructors",
@@ -33,17 +38,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        
+      </head>
       <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            {children}
-          </ThemeProvider>
-        </body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
