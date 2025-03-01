@@ -90,7 +90,7 @@ const Navbar = () => {
                 <span className="sr-only">Toggle theme</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className='z-1000' >
               <DropdownMenuItem onClick={() => setTheme("light")}>
                 Light
               </DropdownMenuItem>
@@ -113,7 +113,7 @@ const Navbar = () => {
                 Get Started
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent align="end" className="w-48 z-1000">
               <DropdownMenuItem className="hover:bg-muted cursor-pointer">
                 <Link href="https://lms-student-dashbord.vercel.app/" target='_blank' className="w-full py-1">
                   Student Login
