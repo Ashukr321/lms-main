@@ -1,18 +1,20 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { FaLinkedin, FaGithub, FaTwitter, FaPlay, FaGraduationCap, FaCertificate, FaLaptopCode, FaUsers, FaClock, FaMobileAlt } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'framer-motion'
 import VideoModal from '@/components/VideoModal'
 import BackgroundLogo from '@/components/BackgroundLogo'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 const Hero = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
-  // Array of hero images
-  const heroImages = [
+  // Memoized hero images array
+  const heroImages = useMemo(() => [
     {
       url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3",
       alt: "Students collaborating on a learning platform"
@@ -29,31 +31,34 @@ const Hero = () => {
       url: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
       alt: "Online learning setup"
     }
-  ]
+  ], [])
 
-  // Auto-rotate images with slower transition (7 seconds)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
-      )
-    }, 4000) // Change image every 7 seconds
-
-    return () => clearInterval(timer)
-  }, [])
-
-  const features = [
+  // Memoized features array
+  const features = useMemo(() => [
     { icon: <FaGraduationCap className="w-6 h-6" />, text: "Expert-Led Courses" },
     { icon: <FaCertificate className="w-6 h-6" />, text: "Verified Certificates" },
     { icon: <FaLaptopCode className="w-6 h-6" />, text: "Hands-on Projects" },
     { icon: <FaMobileAlt className="w-6 h-6" />, text: "Mobile Learning" },
     { icon: <FaUsers className="w-6 h-6" />, text: "Community Support" },
     { icon: <FaClock className="w-6 h-6" />, text: "Lifetime Access" },
-  ]
+  ], [])
+
+  // Auto-rotate images with useCallback
+  useEffect(() => {
+    if (!isMobile) {
+      const timer = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => 
+          prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+        )
+      }, 4000)
+
+      return () => clearInterval(timer)
+    }
+  }, [heroImages.length, isMobile])
 
   return (
     <section className="relative overflow-hidden py-16 sm:py-24 bg-background/60 backdrop-blur-sm min-h-screen">
-      <BackgroundLogo />
+      {!isMobile && <BackgroundLogo />}
       
       {/* Glass Morphism Effect */}
       <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px] backdrop-saturate-150" />
@@ -67,14 +72,7 @@ const Hero = () => {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="space-y-6 sm:space-y-8"
           >
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-block px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm"
-            >
-              <span className="text-primary font-medium text-sm sm:text-base">🚀 New: AI-Powered Learning Path</span>
-            </motion.div>
+           
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-primary via-blue-500 to-blue-600 bg-clip-text text-transparent drop-shadow-sm leading-tight">
               Transform Your Learning Journey with EduOrbit
