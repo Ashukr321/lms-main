@@ -37,7 +37,7 @@ const FaqItem = ({ question, answer }: { question: string, answer: string }) => 
       
     >
       <button
-        className="flex justify-between items-center w-full py-6 text-left"
+        className="flex justify-between items-center w-full py-6 text-left cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="text-lg font-medium">{question}</span>

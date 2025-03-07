@@ -1,30 +1,38 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { Moon, Sun, Menu } from "lucide-react"
-import { useTheme } from "next-themes"
-import { Button } from "@/components/ui/button"
-import { motion, AnimatePresence } from "framer-motion"
-import logo from "../../assets/Logo.png"
-import Image from 'next/image'
+import React, { useState } from "react";
+import Link from "next/link";
+import { Moon, Sun, Menu } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import logo from "../../assets/Logo.png";
+import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import { SignUpButton, UserButton, useSession, useUser } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { setTheme } = useTheme()
-  const [isOpen, setIsOpen] = useState(false)
+  const { setTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
+  const { isSignedIn, user } = useUser();
+  const { session } = useSession();
+  const router = useRouter();
+  const pathName = usePathname();
 
-  const toggleMenu = () => setIsOpen(!isOpen)
+  // Retrieve role from Clerk user metadata
+  // const role = user?.publicMetadata?.role || "Guest"; // Default role
+
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 fixed top-0 z-1000">
+    <nav className="w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 fixed top-0 z-1000 px-8">
       <div className="container flex h-16 items-center px-4 mx-auto justify-between">
-        
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <Button variant="ghost" size="icon" onClick={toggleMenu}>
@@ -35,9 +43,9 @@ const Navbar = () => {
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 group">
           <div className="w-10 h-10 md:w-12 md:h-12 relative">
-            <Image 
-              src={logo} 
-              alt="logo" 
+            <Image
+              src={logo}
+              alt="logo"
               className="object-contain group-hover:scale-105 transition-transform"
               fill
               priority
@@ -47,39 +55,38 @@ const Navbar = () => {
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link 
-            href="#features" 
+          <Link
+            href="#features"
             className="text-sm font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
           >
             Features
           </Link>
-          <Link 
-            href="#blog" 
+          <Link
+            href="#blog"
             className="text-sm font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
           >
             Blog
           </Link>
-          <Link 
-            href="#about" 
+          <Link
+            href="#about"
             className="text-sm font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
           >
             About
           </Link>
-          <Link 
-            href="#faq" 
+          <Link
+            href="#faq"
             className="text-sm font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
           >
             FAQ
           </Link>
-          <Link 
-            href="#team" 
+          <Link
+            href="#team"
             className="text-sm font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
           >
             Team
           </Link>
         </div>
 
-        {/* Auth Button and Theme Toggle */}
         <div className="flex items-center space-x-4">
           {/* Theme Toggle */}
           <DropdownMenu>
@@ -90,7 +97,7 @@ const Navbar = () => {
                 <span className="sr-only">Toggle theme</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className='z-1000' >
+            <DropdownMenuContent align="end" className="z-1000">
               <DropdownMenuItem onClick={() => setTheme("light")}>
                 Light
               </DropdownMenuItem>
@@ -104,28 +111,44 @@ const Navbar = () => {
           </DropdownMenu>
 
           {/* Auth Button */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
+          {!isSignedIn ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="default"
+                  className="bg-gradient-to-r from-primary cursor-pointer to-blue-600 hover:opacity-90 transition-opacity"
+                >
+                  Get Started
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 z-1000">
+                <DropdownMenuItem className="hover:bg-muted">
+                  <SignUpButton mode="modal">Student</SignUpButton>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-muted cursor-pointer">
+                  <SignUpButton mode="modal">Instructor</SignUpButton>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            pathName != "/dashboard" && (
+              <Button
                 variant="default"
                 className="bg-gradient-to-r from-primary cursor-pointer to-blue-600 hover:opacity-90 transition-opacity"
               >
-                Get Started
+                <Link href={"/dashboard"}> Dashboard </Link>
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 z-1000">
-              <DropdownMenuItem className="hover:bg-muted cursor-pointer">
-                <Link href="https://lms-student-dashbord.vercel.app/" target='_blank' className="w-full py-1">
-                  Student Login
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-muted cursor-pointer ">
-                <Link href="/" className="w-full py-1 ">
-                  Instructor Login
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            )
+          )}
+          {isSignedIn && pathName != "/" && (
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "w-10 h-10",
+                },
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -147,35 +170,35 @@ const Navbar = () => {
               className="absolute top-16 left-0 right-0 bg-background border-b z-30"
             >
               <div className="flex flex-col space-y-4 p-4">
-                <Link 
+                <Link
                   href="#features"
-                  onClick={() => setIsOpen(false)} 
+                  onClick={() => setIsOpen(false)}
                   className="text-sm font-medium hover:text-primary transition-colors px-4 py-2 hover:bg-muted rounded-lg"
                 >
                   Features
                 </Link>
-                <Link 
+                <Link
                   href="#blog"
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-medium hover:text-primary transition-colors px-4 py-2 hover:bg-muted rounded-lg"
                 >
                   Blog
                 </Link>
-                <Link 
+                <Link
                   href="#about"
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-medium hover:text-primary transition-colors px-4 py-2 hover:bg-muted rounded-lg"
                 >
                   About
                 </Link>
-                <Link 
+                <Link
                   href="#faq"
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-medium hover:text-primary transition-colors px-4 py-2 hover:bg-muted rounded-lg"
                 >
                   FAQ
                 </Link>
-                <Link 
+                <Link
                   href="#team"
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-medium hover:text-primary transition-colors px-4 py-2 hover:bg-muted rounded-lg"
@@ -188,7 +211,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

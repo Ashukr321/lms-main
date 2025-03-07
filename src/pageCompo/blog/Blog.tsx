@@ -143,8 +143,8 @@ const Blog = () => {
           {/* Sort Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                Sort by {sortOption === 'recent' ? 'Most Recent' : 'Oldest First'}
+              <Button variant="outline" className="flex items-center gap-2 cursor-pointer">
+                Sort by: {sortOption === 'recent' ? 'Most Recent' : 'Oldest First'}
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
