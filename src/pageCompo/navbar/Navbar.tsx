@@ -14,19 +14,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SignUpButton, UserButton, useSession, useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const { isSignedIn, user } = useUser();
-  const { session } = useSession();
-  const router = useRouter();
+  const { isSignedIn } = useUser();
   const pathName = usePathname();
-
-  // Retrieve role from Clerk user metadata
-  // const role = user?.publicMetadata?.role || "Guest"; // Default role
+  const router = useRouter();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -110,8 +106,27 @@ const Navbar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Auth Button */}
-          {!isSignedIn ? (
+          {/* Auth */}
+          {isSignedIn ? (
+            <>
+              {/* Dashboard Button - Visible when not on /dashboard */}
+              {pathName !== "/dashboard" && (
+                <Button
+                  variant="default"
+                  className="bg-gradient-to-r from-primary cursor-pointer to-blue-600 hover:opacity-90 transition-opacity"
+                >
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button>
+              )}
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-10 h-10",
+                  },
+                }}
+              />
+            </>
+          ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -122,32 +137,23 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 z-1000">
-                <DropdownMenuItem className="hover:bg-muted">
-                  <SignUpButton mode="modal">Student</SignUpButton>
+                <DropdownMenuItem
+                  onClick={() => {router.push("/sign-up?role=Student")
+                    console.log("hello");
+                    
+                  }}
+                  className="hover:bg-muted"
+                >
+                  Student
                 </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-muted cursor-pointer">
-                  <SignUpButton mode="modal">Instructor</SignUpButton>
+                <DropdownMenuItem
+                  onClick={() => router.push("/sign-up?role=Instructor")}
+                  className="hover:bg-muted cursor-pointer"
+                >
+                  Instructor
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          ) : (
-            pathName != "/dashboard" && (
-              <Button
-                variant="default"
-                className="bg-gradient-to-r from-primary cursor-pointer to-blue-600 hover:opacity-90 transition-opacity"
-              >
-                <Link href={"/dashboard"}> Dashboard </Link>
-              </Button>
-            )
-          )}
-          {isSignedIn && pathName != "/" && (
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "w-10 h-10",
-                },
-              }}
-            />
           )}
         </div>
       </div>
