@@ -52,7 +52,7 @@ const About = () => {
               className="space-y-6"
             >
               <h2 className="text-3xl font-bold">Our Mission</h2>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground lg:w-[90%]">
                 At EduOrbit, we believe in democratizing education by making high-quality learning accessible to everyone. Our mission is to create an engaging, interactive, and personalized learning environment that empowers students and educators alike.
               </p>
               <ul className="space-y-4">
